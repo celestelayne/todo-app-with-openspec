@@ -68,6 +68,27 @@ interface TodoApi {
 
 The exact contract will be refined during the Todo reference implementation.
 
+### Implemented Contract (Create and List slice)
+
+The first slice implements `list` and `create` over HTTP. Paths are relative to `VITE_API_BASE_URL`.
+
+| Operation | Request                   | Success response      | Failure                     |
+| --------- | ------------------------- | --------------------- | --------------------------- |
+| `list`    | `GET /todos`              | `200` with `Todo[]`   | Any non-2xx or invalid body |
+| `create`  | `POST /todos` `{ title }` | `201` with the `Todo` | `400` for an invalid title  |
+
+```ts
+interface Todo {
+  id: string;
+  title: string;
+  isCompleted: boolean;
+  createdAt: string; // ISO 8601
+  updatedAt: string; // ISO 8601
+}
+```
+
+The server owns `id`, `isCompleted` (initially `false`), `createdAt`, and `updatedAt`; the client sends only `title`. The Zod schemas in `src/features/todos/model/todo.ts` validate every response and are reused by the MSW handlers. `update` and `remove` remain illustrative until their slices are specified.
+
 ## Alternatives Considered
 
 ### Direct Fetch Calls in Components
