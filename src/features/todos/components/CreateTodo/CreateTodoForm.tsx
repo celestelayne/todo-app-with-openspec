@@ -2,8 +2,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useId } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { useCreateTodo } from '../api/queries.ts';
-import { createTodoInputSchema, type CreateTodoInput } from '../model/todo.ts';
+import { useCreateTodo } from '../../api/queries.ts';
+import {
+  createTodoInputSchema,
+  type CreateTodoInput,
+} from '../../model/todo.ts';
 import styles from './CreateTodoForm.module.css';
 
 export function CreateTodoForm() {

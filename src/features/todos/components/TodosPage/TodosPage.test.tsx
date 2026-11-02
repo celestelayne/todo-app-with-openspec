@@ -1,8 +1,12 @@
 import { describe, expect, it } from 'vitest';
 
-import { todosDb } from '../../../mocks/todosDb.ts';
-import { expectNoAxeViolations } from '../../../test/axe.ts';
-import { renderWithProviders, screen, within } from '../../../test/render.tsx';
+import { todosDb } from '../../../../mocks/todosDb.ts';
+import { expectNoAxeViolations } from '../../../../test/axe.ts';
+import {
+  renderWithProviders,
+  screen,
+  within,
+} from '../../../../test/render.tsx';
 import { TodosPage } from './TodosPage.tsx';
 
 describe('TodosPage', () => {

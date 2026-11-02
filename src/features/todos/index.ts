@@ -1,1 +1,1 @@
-export { TodosPage } from './components/TodosPage.tsx';
+export { TodosPage } from './components/TodosPage/TodosPage.tsx';

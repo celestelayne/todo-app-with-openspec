@@ -1,5 +1,5 @@
-import { CreateTodoForm } from './CreateTodoForm.tsx';
-import { TodoList } from './TodoList.tsx';
+import { CreateTodoForm } from '../CreateTodo/CreateTodoForm.tsx';
+import { TodoList } from '../TodoList/TodoList.tsx';
 import styles from './TodosPage.module.css';
 
 export function TodosPage() {

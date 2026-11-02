@@ -1,4 +1,4 @@
-import { useTodos } from '../api/queries.ts';
+import { useTodos } from '../../api/queries.ts';
 import styles from './TodoList.module.css';
 
 export function TodoList() {
