@@ -16,8 +16,9 @@ Before beginning a task:
 2. Read `docs/architecture.md` to understand the system.
 3. Consult relevant Architecture Decision Records in `docs/adr/`.
 4. Read `docs/engineering/standards.md`.
-5. Review the existing code and tests related to the task.
-6. Check for an applicable OpenSpec change when OpenSpec is configured.
+5. Read `docs/engineering/workflow.md` before creating a branch, committing, or opening a pull request.
+6. Review the existing code and tests related to the task.
+7. Check for an applicable OpenSpec change when OpenSpec is configured.
 
 ### Important Paths
 

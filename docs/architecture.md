@@ -55,7 +55,7 @@ src/
     └── global.css
 ```
 
-The `todos` feature is illustrative and will be introduced during reference application development.
+The `todos` feature was introduced with the create-and-list slice (`api/`, `components/`, `model/`, and a public `index.ts`). Its `store/` directory is not created because the slice has no shared client state. `App.tsx` currently remains at `src/App.tsx` rather than `src/app/App.tsx`.
 
 ### Module Responsibilities
 

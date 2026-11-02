@@ -67,6 +67,12 @@ This runs the checks currently configured in `package.json`.
 
 Do not assume tests or architecture checks are included until those scripts have been added.
 
+## Continuous Integration
+
+The `Verify` job in `.github/workflows/ci.yml` runs the verification levels above on every pull request and on pushes to `main`: `pnpm check` (static checks, tests, and build), `pnpm architecture:check`, and `pnpm test:e2e`. Run the same commands locally before pushing.
+
+See `workflow.md` for how these checks fit into the branch, pull request, and merge process.
+
 ## AI Agent Verification Contract
 
 Before reporting completion, an agent must:
