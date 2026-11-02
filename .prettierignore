@@ -1,0 +1,12 @@
+# Ignore artifacts:
+build
+coverage
+
+dist
+coverage
+playwright-report
+test-results
+
+# Generated files
+pnpm-lock.yaml
+public/mockServiceWorker.js
