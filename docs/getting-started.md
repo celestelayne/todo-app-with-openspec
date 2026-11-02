@@ -373,18 +373,7 @@ For interface changes, inspect the actual application in a browser. Check respon
 
 ## 11. Submit Your Changes
 
-Create a focused Git branch:
-
-```bash
-git switch -c feat/todo-priority
-```
-
-Commit related changes together:
-
-```bash
-git add .
-git commit -m "feat: add todo priority"
-```
+Create a focused branch before you start, commit related changes together, and open a pull request into `main`. The full branch, commit, pull request, CI, and merge process is in [`docs/engineering/workflow.md`](engineering/workflow.md).
 
 Before opening a pull request, summarize:
 
