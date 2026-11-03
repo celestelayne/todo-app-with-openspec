@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 
 import { server } from '../../../mocks/server.ts';
 import { createFetchApiClient } from '../../../shared/api/FetchApiClient.ts';
-import { createTodo, listTodos } from './todosApi.ts';
+import { createTodo, listTodos, updateTodo } from './todosApi.ts';
 
 const client = createFetchApiClient({ baseUrl: 'http://localhost:3000' });
 
@@ -69,5 +69,43 @@ describe('createTodo', () => {
     );
 
     await expect(createTodo(client, { title: 'Buy milk' })).rejects.toThrow();
+  });
+});
+
+describe('updateTodo', () => {
+  it('sends only isCompleted to the encoded todo path and returns the validated todo', async () => {
+    let requestBody: unknown;
+    let pathname = '';
+    server.use(
+      http.patch('*/todos/*', async ({ request }) => {
+        requestBody = await request.json();
+        pathname = new URL(request.url).pathname;
+        return HttpResponse.json({ ...validTodo, isCompleted: true });
+      }),
+    );
+
+    await expect(
+      updateTodo(client, 'a/b c', { isCompleted: true }),
+    ).resolves.toEqual({ ...validTodo, isCompleted: true });
+    expect(requestBody).toEqual({ isCompleted: true });
+    expect(pathname).toBe('/todos/a%2Fb%20c');
+  });
+
+  it('rejects when the updated todo is malformed', async () => {
+    server.use(http.patch('*/todos/*', () => HttpResponse.json({ id: 'abc' })));
+
+    await expect(
+      updateTodo(client, 'abc', { isCompleted: true }),
+    ).rejects.toThrow();
+  });
+
+  it('rejects when the server responds with an error status', async () => {
+    server.use(
+      http.patch('*/todos/*', () => HttpResponse.json({}, { status: 404 })),
+    );
+
+    await expect(
+      updateTodo(client, 'abc', { isCompleted: true }),
+    ).rejects.toThrow();
   });
 });

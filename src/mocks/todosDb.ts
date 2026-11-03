@@ -1,4 +1,4 @@
-import type { Todo } from '../features/todos/model/todo.ts';
+import type { Todo, UpdateTodoInput } from '../features/todos/model/todo.ts';
 
 let todos: Todo[] = [];
 
@@ -18,6 +18,18 @@ export const todosDb = {
     };
     todos = [...todos, todo];
     return todo;
+  },
+
+  update(id: string, input: UpdateTodoInput): Todo | undefined {
+    const existing = todos.find((todo) => todo.id === id);
+    if (!existing) return undefined;
+    const updated: Todo = {
+      ...existing,
+      ...input,
+      updatedAt: new Date().toISOString(),
+    };
+    todos = todos.map((todo) => (todo.id === id ? updated : todo));
+    return updated;
   },
 
   reset(): void {

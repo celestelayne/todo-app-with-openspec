@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { todoSchema } from '../features/todos/model/todo.ts';
 
@@ -50,5 +50,75 @@ describe('todos mock handlers', () => {
 
     expect(todos).toHaveLength(1);
     expect(todos[0].title).toBe('Buy milk');
+  });
+});
+
+function patchTodo(id: string, body: unknown) {
+  return fetch(`${todosUrl}/${id}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+}
+
+async function createTodoViaApi(title: string) {
+  return todoSchema.parse(await (await postTodo({ title })).json());
+}
+
+describe('PATCH /todos/:id', () => {
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it('updates isCompleted, keeps id, title, and createdAt, and advances updatedAt', async () => {
+    vi.useFakeTimers({
+      toFake: ['Date'],
+      now: new Date('2026-11-02T10:00:00.000Z'),
+    });
+    const created = await createTodoViaApi('Buy milk');
+    vi.setSystemTime(new Date('2026-11-02T10:00:05.000Z'));
+
+    const response = await patchTodo(created.id, { isCompleted: true });
+
+    expect(response.status).toBe(200);
+    const updated = todoSchema.parse(await response.json());
+    expect(updated).toEqual({
+      ...created,
+      isCompleted: true,
+      updatedAt: '2026-11-02T10:00:05.000Z',
+    });
+  });
+
+  it('can set isCompleted back to false', async () => {
+    const created = await createTodoViaApi('Buy milk');
+    await patchTodo(created.id, { isCompleted: true });
+
+    const response = await patchTodo(created.id, { isCompleted: false });
+
+    expect(todoSchema.parse(await response.json()).isCompleted).toBe(false);
+  });
+
+  it('is reflected by GET /todos', async () => {
+    const created = await createTodoViaApi('Buy milk');
+    await patchTodo(created.id, { isCompleted: true });
+
+    const todos = await (await fetch(todosUrl)).json();
+
+    expect(todos).toHaveLength(1);
+    expect(todos[0].isCompleted).toBe(true);
+  });
+
+  it('responds 400 for an invalid body', async () => {
+    const created = await createTodoViaApi('Buy milk');
+
+    const response = await patchTodo(created.id, { isCompleted: 'yes' });
+
+    expect(response.status).toBe(400);
+  });
+
+  it('responds 404 for an unknown id', async () => {
+    const response = await patchTodo('does-not-exist', { isCompleted: true });
+
+    expect(response.status).toBe(404);
   });
 });

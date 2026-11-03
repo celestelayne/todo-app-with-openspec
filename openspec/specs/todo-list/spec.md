@@ -39,19 +39,24 @@ The system SHALL display each todo's title and completion state, ordered by `cre
 - **WHEN** a todo is created successfully
 - **THEN** it appears at the top of the list without a page reload
 
-### Requirement: Read-only completion state
+### Requirement: Completion state display
 
-The system SHALL show each todo's completion state as text and SHALL NOT provide controls to toggle, edit, or delete a todo.
+The system SHALL show each todo's completion state as text and SHALL NOT provide controls to edit or delete a todo. Changing completion state is defined by the `todo-completion` capability.
 
 #### Scenario: Incomplete todo
 
 - **WHEN** a todo with `isCompleted: false` is listed
 - **THEN** its state is conveyed by text, not by color alone
 
+#### Scenario: Completed todo
+
+- **WHEN** a todo with `isCompleted: true` is listed
+- **THEN** its state is conveyed by text, not by color alone
+
 #### Scenario: No mutation controls
 
 - **WHEN** the list is displayed
-- **THEN** no toggle, edit, or delete control is present
+- **THEN** no edit or delete control is present
 
 ### Requirement: Loading state
 

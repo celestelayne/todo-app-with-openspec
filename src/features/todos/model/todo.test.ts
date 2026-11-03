@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest';
 
-import { createTodoInputSchema, todoSchema } from './todo.ts';
+import {
+  createTodoInputSchema,
+  todoSchema,
+  updateTodoInputSchema,
+} from './todo.ts';
 
 const validTodo = {
   id: 'abc',
@@ -53,5 +57,23 @@ describe('createTodoInputSchema', () => {
     const title = 'a'.repeat(300);
 
     expect(createTodoInputSchema.parse({ title })).toEqual({ title });
+  });
+});
+
+describe('updateTodoInputSchema', () => {
+  it.each([true, false])('accepts isCompleted: %s', (isCompleted) => {
+    expect(updateTodoInputSchema.parse({ isCompleted })).toEqual({
+      isCompleted,
+    });
+  });
+
+  it('rejects a missing isCompleted', () => {
+    expect(updateTodoInputSchema.safeParse({}).success).toBe(false);
+  });
+
+  it('rejects a non-boolean isCompleted', () => {
+    expect(
+      updateTodoInputSchema.safeParse({ isCompleted: 'yes' }).success,
+    ).toBe(false);
   });
 });

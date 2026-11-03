@@ -77,14 +77,18 @@ describe('TodoList', () => {
     expect(within(second!).getByText('Completed')).toBeInTheDocument();
   });
 
-  it('provides no toggle, edit, or delete controls', async () => {
-    respondWith([newer]);
+  it('provides only a completion checkbox per row and no edit or delete controls', async () => {
+    respondWith([older, newer]);
 
     renderWithProviders(<TodoList />);
 
-    await screen.findByText('Newer todo');
+    const items = await screen.findAllByRole('listitem');
+    for (const item of items) {
+      expect(within(item).getAllByRole('checkbox')).toHaveLength(1);
+    }
     expect(screen.queryAllByRole('button')).toEqual([]);
-    expect(screen.queryAllByRole('checkbox')).toEqual([]);
+    expect(screen.queryAllByRole('link')).toEqual([]);
+    expect(screen.queryAllByRole('textbox')).toEqual([]);
   });
 
   it('shows an error with a retry control when loading fails, and recovers on retry', async () => {

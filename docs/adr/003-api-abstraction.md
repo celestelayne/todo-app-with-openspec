@@ -68,14 +68,15 @@ interface TodoApi {
 
 The exact contract will be refined during the Todo reference implementation.
 
-### Implemented Contract (Create and List slice)
+### Implemented Contract (Create, List, and Complete slices)
 
-The first slice implements `list` and `create` over HTTP. Paths are relative to `VITE_API_BASE_URL`.
+The implemented slices cover `list`, `create`, and `update` (completion) over HTTP. Paths are relative to `VITE_API_BASE_URL`.
 
-| Operation | Request                   | Success response      | Failure                     |
-| --------- | ------------------------- | --------------------- | --------------------------- |
-| `list`    | `GET /todos`              | `200` with `Todo[]`   | Any non-2xx or invalid body |
-| `create`  | `POST /todos` `{ title }` | `201` with the `Todo` | `400` for an invalid title  |
+| Operation | Request                              | Success response              | Failure                                            |
+| --------- | ------------------------------------ | ----------------------------- | -------------------------------------------------- |
+| `list`    | `GET /todos`                         | `200` with `Todo[]`           | Any non-2xx or invalid body                        |
+| `create`  | `POST /todos` `{ title }`            | `201` with the `Todo`         | `400` for an invalid title                         |
+| `update`  | `PATCH /todos/:id` `{ isCompleted }` | `200` with the updated `Todo` | `400` for an invalid body, `404` for an unknown id |
 
 ```ts
 interface Todo {
@@ -87,7 +88,7 @@ interface Todo {
 }
 ```
 
-The server owns `id`, `isCompleted` (initially `false`), `createdAt`, and `updatedAt`; the client sends only `title`. The Zod schemas in `src/features/todos/model/todo.ts` validate every response and are reused by the MSW handlers. `update` and `remove` remain illustrative until their slices are specified.
+The server owns `id`, `isCompleted` (initially `false`), `createdAt`, and `updatedAt`; when creating, the client sends only `title`. When updating, the client sends only `isCompleted`, and the server sets `updatedAt` and leaves `id`, `title`, and `createdAt` unchanged. The Zod schemas in `src/features/todos/model/todo.ts` validate every response and are reused by the MSW handlers. `update` currently supports only `isCompleted`; editing the title and `remove` remain illustrative until their slices are specified.
 
 ## Alternatives Considered
 
