@@ -15,3 +15,9 @@ export const createTodoInputSchema = z.object({
 });
 
 export type CreateTodoInput = z.infer<typeof createTodoInputSchema>;
+
+export const updateTodoInputSchema = z.object({
+  isCompleted: z.boolean(),
+});
+
+export type UpdateTodoInput = z.infer<typeof updateTodoInputSchema>;

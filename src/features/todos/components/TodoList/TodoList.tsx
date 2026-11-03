@@ -1,4 +1,5 @@
 import { useTodos } from '../../api/queries.ts';
+import { TodoItem } from '../TodoItem/TodoItem.tsx';
 import styles from './TodoList.module.css';
 
 export function TodoList() {
@@ -34,12 +35,7 @@ export function TodoList() {
   return (
     <ul className={styles.list} aria-label="Todos">
       {newestFirst.map((todo) => (
-        <li key={todo.id} className={styles.item}>
-          <span>{todo.title}</span>
-          <span className={styles.state}>
-            {todo.isCompleted ? 'Completed' : 'Not completed'}
-          </span>
-        </li>
+        <TodoItem key={todo.id} todo={todo} />
       ))}
     </ul>
   );
