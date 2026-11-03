@@ -28,5 +28,5 @@
 
 ## Workflow follow-up
 
+- Commit the implementation first. Then, on the same branch and before merging, sync the specs to `openspec/specs/` and archive the change in a separate commit, as described in `docs/engineering/workflow.md`.
 - Open a pull request from `add-complete-todo` into `main`, and let CI pass before merging.
-- After merge, sync specs and archive the change.
